@@ -1,0 +1,22 @@
+{
+  "npmScope": "car-game-ai",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "car-game-ai": {
+      "tags": []
+    },
+    "car-game-ai-e2e": {
+      "tags": [],
+      "implicitDependencies": ["car-game-ai"]
+    }
+  }
+}
