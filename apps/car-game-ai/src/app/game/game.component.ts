@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import { Car } from './models/car.model';
+import { Track } from './models/track.model';
 
 @Component({
   selector: 'car-game-ai-game',
@@ -18,11 +19,16 @@ export class GameComponent implements AfterViewInit {
   @Input() height: number;
 
   private car : Car;
+  private track: Track;
 
   constructor() {}
 
   ngAfterViewInit(): void {
     this.context = this.gameCanvas.nativeElement.getContext("2d");
+    this.context.fillStyle = "#2bbc12";
+    this.context.fillRect(0, 0, this.width, this.height);
+    this.track = new Track();
+    this.track.draw(this.context);
     this.car = new Car(500, 600, 60, 30);
     this.car.draw(this.context);
     this.arrowsMap = {};
@@ -33,6 +39,9 @@ export class GameComponent implements AfterViewInit {
 
   updateGameArea() {
     this.context.clearRect(0, 0, this.width, this.height);
+    this.context.fillStyle = "#2bbc12";
+    this.context.fillRect(0, 0, this.width, this.height);
+    this.track.draw(this.context);
     this.car.draw(this.context);
     this.moveCar();
   }

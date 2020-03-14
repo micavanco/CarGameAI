@@ -6,6 +6,7 @@ export class Car {
   private degrees: number;
   private readonly width: number;
   private readonly height: number;
+  private readonly image: HTMLImageElement;
 
   constructor(positionX, positionY, width, height) {
     this.positionX = positionX;
@@ -13,6 +14,10 @@ export class Car {
     this.width = width;
     this.height = height;
     this.degrees = 90;
+    this.image = new Image();
+    this.image.src = 'assets/Bulldog-GTA1.png';
+    this.image.width = this.width;
+    this.image.height = this.height;
   }
 
   draw(context: CanvasRenderingContext2D) {
@@ -20,7 +25,7 @@ export class Car {
     context.beginPath();
     context.translate( this.positionX + this.width/2, this.positionY + this.height/2 );
     context.rotate(this.degrees * Math.PI/180);
-    context.strokeRect(-this.width/2,-this.height/2, this.width, this.height);
+    context.drawImage(this.image, -this.width/2, -this.height/2);
     context.restore();
   }
 
