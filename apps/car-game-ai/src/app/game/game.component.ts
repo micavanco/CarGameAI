@@ -12,6 +12,7 @@ export class GameComponent implements AfterViewInit {
 
   private context : CanvasRenderingContext2D;
   private arrowsMap: Object;
+  private carIsTurningTo: string;
 
   @Input() width: number;
   @Input() height: number;
@@ -25,19 +26,36 @@ export class GameComponent implements AfterViewInit {
     this.car = new Car(500, 600, 60, 30);
     this.car.draw(this.context);
     this.arrowsMap = {};
-    addEventListener('keydown', this.moveCar.bind(this));
-    addEventListener('keyup', this.moveCar.bind(this));
+    addEventListener('keydown', this.checkKeys.bind(this));
+    addEventListener('keyup', this.checkKeys.bind(this));
+    setInterval(this.updateGameArea.bind(this), 20);
   }
 
-  moveCar(event) {
-    this.arrowsMap[event.key] = event.type === 'keydown';
-    const carIsTurningTo = this.arrowsMap['ArrowLeft'] ?
-      'ArrowLeft' : this.arrowsMap['ArrowRight'] ? 'ArrowRight' : undefined;
+  updateGameArea() {
+    this.context.clearRect(0, 0, this.width, this.height);
+    this.car.draw(this.context);
+    this.moveCar();
+  }
 
+  checkKeys(event) {
+    this.arrowsMap[event.key] = event.type === 'keydown';
+    this.carIsTurningTo = this.arrowsMap['ArrowLeft'] ?
+      'ArrowLeft' : this.arrowsMap['ArrowRight'] ? 'ArrowRight' : undefined;
+  }
+
+  moveCar() {
     if(this.arrowsMap['ArrowUp']) {
-      this.car.move(this.context, this.width, this.height, carIsTurningTo, true);
+      const interval = setInterval(()=>{
+        this.car.move(this.context, true);
+        this.car.rotate(this.context, this.carIsTurningTo, true);
+      }, 50);
+      setTimeout(() => clearInterval(interval), 500);
     } else if(this.arrowsMap['ArrowDown']) {
-      this.car.move(this.context, this.width, this.height, carIsTurningTo, false);
+      const interval = setInterval(()=>{
+        this.car.move(this.context, false);
+        this.car.rotate(this.context, this.carIsTurningTo, false);
+      }, 50);
+      setTimeout(() => clearInterval(interval), 500);
     }
   }
 
